@@ -1,6 +1,10 @@
 The MIT License (MIT)
 
-Copyright (c) 2017  Onur Aslan  <onur@onur.im>
+Copyright (c) 2022 Fredrik Broman <fredrik.broman@gmail.com>
+
+Program uses the following files from other authors;
+see their respective license headers for more details:
+lib.rs: Copyright 2017 Onur Aslan, 2020-2021 Daniel Dettlaff, MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
