@@ -1,0 +1,20 @@
+[package]
+name = "ssl-expiration"
+version = "0.3.0"
+description = "Checks SSL certificate expiration"
+authors = ["Onur Aslan <onur@onur.im>", "Daniel Dettlaff <dmilith@me.com>", "Fredrik Broman <fredrik.broman@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/bromaniac/ssl-expiration"
+documentation = "https://docs.rs/ssl-expiration"
+edition = "2021"
+
+[dependencies]
+error-chain = "0.12.4"
+openssl = "0.10.32"
+openssl-sys = "0.9.60"
+
+[[bin]]
+name = "ssl-expiration"
+test = false
+doc = false
