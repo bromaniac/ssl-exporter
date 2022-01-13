@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2017 Onur Aslan <onur@onur.im>
-// Copyright (c) 2020-2021 Daniel Dettlaff <dmilith@me.com>
+// Copyright (c) 2017  Onur Aslan  <onur@onur.im>
+// Copyright (c) 2021  Daniel Dettlaff <dmilith@me.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
