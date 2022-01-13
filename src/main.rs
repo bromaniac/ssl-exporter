@@ -25,26 +25,30 @@ async fn main() {
     let addr = ([0, 0, 0, 0], 8080).into();
     println!("starting exporter on {}", addr);
 
-    render_prometheus(addr, MyOptions::default(), move |request, options| async move {
-        println!(
-            "in our render_prometheus(request == {:?}, options == {:?})",
-            request, options
-        );
+    render_prometheus(
+        addr,
+        MyOptions::default(),
+        move |request, options| async move {
+            println!(
+                "in our render_prometheus(request == {:?}, options == {:?})",
+                request, options
+            );
 
-        Ok(PrometheusMetric::build()
-            .with_name("days_until_expiry")
-            .with_metric_type(MetricType::Counter)
-            .with_help("Days left until expiry")
-            .build()
-            .render_and_append_instance(
-                &PrometheusInstance::new()
-                    .with_label("domain", "console.cloud")
-                    .with_value(check_domain(arg))
-                    .with_current_timestamp()
-                    .expect("error getting the UNIX epoch"),
-            )
-            .render())
-    })
+            Ok(PrometheusMetric::build()
+                .with_name("days_until_expiry")
+                .with_metric_type(MetricType::Counter)
+                .with_help("Days left until expiry")
+                .build()
+                .render_and_append_instance(
+                    &PrometheusInstance::new()
+                        .with_label("domain", arg)
+                        .with_value(check_domain(arg))
+                        .with_current_timestamp()
+                        .expect("error getting the UNIX epoch"),
+                )
+                .render())
+        },
+    )
     .await;
 
     exit(0);
