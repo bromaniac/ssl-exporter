@@ -22,7 +22,7 @@ async fn main() {
     let arg = Box::new(domain);
     let arg: &'static str = Box::leak(arg);
 
-    let addr = ([0, 0, 0, 0], 32221).into();
+    let addr = ([0, 0, 0, 0], 8080).into();
     println!("starting exporter on {}", addr);
 
     render_prometheus(addr, MyOptions::default(), move |request, options| async move {
