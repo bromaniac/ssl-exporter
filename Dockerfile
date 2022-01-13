@@ -1,3 +1,3 @@
 FROM debian:bullseye-slim
-COPY ./target/release/ssl-expiration /app/ssl-expiration
-ENTRYPOINT ["/app/ssl-expiration"]
+COPY ./target/release/ssl-exporter /app/ssl-exporter
+ENTRYPOINT ["/app/ssl-exporter"]
