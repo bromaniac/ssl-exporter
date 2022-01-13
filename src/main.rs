@@ -70,7 +70,7 @@ fn check_domain(domain: &'static str) -> i32 {
                 domain,
                 e.description()
             );
-            exit(-1)
+            -1 // indicates error
         }
     }
 }
