@@ -1,11 +1,11 @@
 [package]
-name = "ssl-expiration"
+name = "ssl-exporter"
 version = "0.1.0"
-description = "Checks SSL certificate expiration and expose as Prometheus metric"
+description = "Checks SSL certificate expiration and expose it as a Prometheus metric"
 authors = ["Fredrik Broman <fredrik.broman@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/bromaniac/ssl-expiration"
+repository = "https://github.com/bromaniac/ssl-exporter"
 edition = "2021"
 
 [dependencies]
@@ -17,6 +17,10 @@ tokio = { version = "1.15.0", features = ["full"] }
 cached = "0.28.0"
 
 [[bin]]
-name = "ssl-expiration"
+name = "ssl-exporter"
 test = false
 doc = false
+
+[lib]
+name = "ssl_expiration"
+path  = "src/lib.rs"
