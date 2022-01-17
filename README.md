@@ -1,9 +1,9 @@
 # ssl-expiration
 
-Checks SSL certificate expiration and exports as Prometheus metric. The check is cached for 24 hours so the domain being checked won't be hammered with requests.
+Checks SSL certificate expiration and exports as Prometheus metric. The check is cached for 24 hours so the domain being checked won't be hammered with requests. (This is moot if you deploy to OCP since you can set scrape interval in the ServiceMonitor.)
 
 ## Deploy in Openshift
-Review ocp-deploy.yaml and deploy in Openshift
+Review ocp-deploy.yaml and then deploy in Openshift
 ```bash
 oc apply -f ocp-deploy.yaml
 ```
