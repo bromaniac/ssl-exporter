@@ -68,5 +68,21 @@ spec:
       expr: days_until_expiry{domain="github.com"} < 0
       labels:
         severity: error
-        annotations:
+      annotations:
           summary: Certificate expiry could not be checked
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: ssl-exporter
+  name: ssl-exporter
+  namespace: foo
+spec:
+  endpoints:
+  - interval: 12h
+    port: web
+    scheme: http
+  selector:
+    matchLabels:
+      app: ssl-exporter
