@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ssl-exporter
+  namespace: foo
+  labels:
+        app: ssl-exporter
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  containers:
+  - name: ssl-exporter
+    image: alpha60/ssl-exporter:latest
+    envFrom:
+      - configMapRef:
+          name: ssl-exporter
+    resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ssl-exporter
+  name: ssl-exporter
+  namespace: foo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+    name: web
+  selector:
+    app: ssl-exporter
+  type: ClusterIP
+---
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: ssl-exporter
+  namespace: foo
+data:
+  SSL_EXPIRATION_DOMAIN: github.com
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ssl-expiration-alert
+  namespace: foo
+spec:
+  groups:
+  - name: certificate
+    rules:
+    - alert: ssl-exporter-alert
+      expr: days_until_expiry{domain="github.com"} < 22 > 0
+      labels:
+        severity: warning
+    - alert: ssl-exporter-alert
+      expr: days_until_expiry{domain="github.com"} < 7 > 0
+      labels:
+        severity: critical
+    - alert: ssl-exporter-alert
+      expr: days_until_expiry{domain="github.com"} < 0
+      labels:
+        severity: error
+        annotations:
+          summary: Certificate expiry could not be checked
