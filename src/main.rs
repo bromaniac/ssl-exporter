@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-use cached::proc_macro::cached;
 use prometheus_exporter_base::prelude::*;
 use ssl_expiration::SslExpiration;
 use std::env;
@@ -76,8 +75,6 @@ async fn main() {
     exit(0);
 }
 
-// 24h cache
-#[cached(time = 86400, time_refresh = false)]
 fn check_domain(domain: &'static str) -> i32 {
     match SslExpiration::from_domain_name(&domain) {
         Ok(expiration) => {
