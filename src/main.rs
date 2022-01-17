@@ -39,43 +39,35 @@ async fn main() {
         }
     };
 
-    // black magic to turn String -> &'static str
-    let arg = Box::new(domain);
-    let arg: &'static str = Box::leak(arg);
-
     let addr = ([0, 0, 0, 0], 8080).into();
     println!("starting exporter on {}", addr);
 
-    render_prometheus(
-        addr,
-        MyOptions::default(),
-        move |request, options| async move {
-            println!(
-                "in our render_prometheus(request == {:?}, options == {:?})",
-                request, options
-            );
+    render_prometheus(addr, MyOptions::default(), |request, options| async move {
+        println!(
+            "in our render_prometheus(request == {:?}, options == {:?})",
+            request, options
+        );
 
-            Ok(PrometheusMetric::build()
-                .with_name("days_until_expiry")
-                .with_metric_type(MetricType::Counter)
-                .with_help("Days left until expiry")
-                .build()
-                .render_and_append_instance(
-                    &PrometheusInstance::new()
-                        .with_label("domain", arg)
-                        .with_value(check_domain(arg))
-                        .with_current_timestamp()
-                        .expect("error getting the UNIX epoch"),
-                )
-                .render())
-        },
-    )
+        Ok(PrometheusMetric::build()
+            .with_name("days_until_expiry")
+            .with_metric_type(MetricType::Counter)
+            .with_help("Days left until expiry")
+            .build()
+            .render_and_append_instance(
+                &PrometheusInstance::new()
+                    .with_label("domain", &*domain)
+                    .with_value(check_domain(&domain))
+                    .with_current_timestamp()
+                    .expect("error getting the UNIX epoch"),
+            )
+            .render())
+    })
     .await;
 
     exit(0);
 }
 
-fn check_domain(domain: &'static str) -> i32 {
+fn check_domain(domain: &str) -> i32 {
     match SslExpiration::from_domain_name(&domain) {
         Ok(expiration) => {
             let days = expiration.days();
