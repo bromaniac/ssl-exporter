@@ -60,16 +60,20 @@ spec:
       expr: days_until_expiry{domain="github.com"} < 22 > 0
       labels:
         severity: warning
+      annotations:
+          summary: Certificate for github.com will expire in less than 22 days
     - alert: ssl-exporter-alert
       expr: days_until_expiry{domain="github.com"} < 7 > 0
       labels:
         severity: critical
+      annotations:
+          summary: Certificate for github.com will expire in less than seven days
     - alert: ssl-exporter-alert
       expr: days_until_expiry{domain="github.com"} < 0
       labels:
         severity: error
       annotations:
-          summary: Certificate expiry could not be checked
+          summary: Certificate expiry for github.com could not be checked
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
