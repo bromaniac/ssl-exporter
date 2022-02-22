@@ -35,7 +35,7 @@ async fn main() {
         Ok(domain) => domain,
         Err(e) => {
             eprintln!("Couldn't read SSL_EXPIRATION_DOMAIN ({})", e);
-            exit(-1)
+            exit(22) // EINVAL
         }
     };
 
