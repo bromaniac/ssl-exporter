@@ -35,6 +35,5 @@ curl localhost:8080/metrics
 ## Build container image
 ```bash
 cargo b --release
-strip target/release/ssl-exporter
 BUILD_KIT=1 docker build -t ssl-exporter .
 ```
