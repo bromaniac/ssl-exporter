@@ -1,6 +1,6 @@
 [package]
 name = "ssl-exporter"
-version = "0.1.0"
+version = "0.2.0"
 description = "Checks SSL certificate expiration and expose it as a Prometheus metric"
 authors = ["Fredrik Broman <fredrik.broman@gmail.com>"]
 license = "MIT"
