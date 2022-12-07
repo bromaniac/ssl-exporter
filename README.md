@@ -1,5 +1,4 @@
-# Update 2022-02-22:
-As of version 1.3.7 the [cert-util-operator](https://github.com/redhat-cop/cert-utils-operator) supports alerting on expiring certs so this is probably not needed anymore.
+As of version 1.3.7 the [cert-util-operator](https://github.com/redhat-cop/cert-utils-operator) supports alerting on expiring certs stored as secrets in the cluster. Unfortunately we have some certs stored directly in the Istio routes in our cluster and those can be checked with this tool.
 
 # ssl-expiration
 
@@ -37,3 +36,5 @@ curl localhost:8080/metrics
 cargo b --release
 BUILD_KIT=1 docker build -t ssl-exporter .
 ```
+## Multiple domains
+Just add them as a comma separated list like this: SSL_EXPIRATION_DOMAIN=github.com,microsoft.com,google.com

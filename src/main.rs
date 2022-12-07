@@ -32,13 +32,17 @@ struct MyOptions {}
 
 #[tokio::main]
 async fn main() {
-    let domain = match env::var("SSL_EXPIRATION_DOMAIN") {
-        Ok(domain) => domain,
+    let domains_env = match env::var("SSL_EXPIRATION_DOMAIN") {
+        Ok(domains_env) => domains_env,
         Err(e) => {
             eprintln!("Couldn't read SSL_EXPIRATION_DOMAIN ({})", e);
             exit(22) // EINVAL
         }
     };
+
+    let x: &'static String = Box::leak(Box::new(domains_env));
+
+    let domains: Vec<&str> = x.split(',').collect();
 
     let addr: SocketAddr = ([0, 0, 0, 0], 8080).into();
     println!("starting exporter on {:?}", addr);
@@ -48,26 +52,32 @@ async fn main() {
         authorization: Authorization::None,
     };
 
-    render_prometheus(server_options, MyOptions::default(), |request, options| async move {
-        println!(
-            "in our render_prometheus(request == {:?}, options == {:?})",
-            request, options
-        );
+    render_prometheus(
+        server_options,
+        MyOptions::default(),
+        |request, options| async move {
+            println!(
+                "in our render_prometheus(request == {:?}, options == {:?})",
+                request, options
+            );
 
-        Ok(PrometheusMetric::build()
-            .with_name("days_until_expiry")
-            .with_metric_type(MetricType::Counter)
-            .with_help("Days left until expiry")
-            .build()
-            .render_and_append_instance(
-                &PrometheusInstance::new()
-                    .with_label("domain", &*domain)
-                    .with_value(check_domain(&domain))
-                    .with_current_timestamp()
-                    .expect("error getting the UNIX epoch"),
-            )
-            .render())
-    })
+            let mut pc = PrometheusMetric::build()
+                .with_name("days_until_expiry")
+                .with_metric_type(MetricType::Counter)
+                .with_help("Days left until expiry")
+                .build();
+            for domain in domains {
+                pc.render_and_append_instance(
+                    &PrometheusInstance::new()
+                        .with_label("domain", &*domain)
+                        .with_value(check_domain(&domain))
+                        .with_current_timestamp()
+                        .expect("error getting the UNIX epoch"),
+                );
+            }
+            Ok(pc.render())
+        },
+    )
     .await;
 
     exit(0);
