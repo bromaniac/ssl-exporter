@@ -13,7 +13,7 @@ rust-version = "1.59"
 error-chain = "0.12.4"
 openssl = "0.10.32"
 openssl-sys = "0.9.60"
-prometheus_exporter_base = { version = "1.3.0", features = ["hyper_server"] }
+prometheus_exporter_base = { version = "1.4.0", features = ["hyper_server"] }
 tokio = { version = "1.15.0", features = ["full"] }
 
 [[bin]]
