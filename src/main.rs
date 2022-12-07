@@ -24,6 +24,7 @@ use prometheus_exporter_base::prelude::*;
 use ssl_expiration::SslExpiration;
 use std::env;
 use std::io::{stderr, Write};
+use std::net::SocketAddr;
 use std::process::exit;
 
 #[derive(Debug, Clone, Default)]
@@ -39,10 +40,15 @@ async fn main() {
         }
     };
 
-    let addr = ([0, 0, 0, 0], 8080).into();
-    println!("starting exporter on {}", addr);
+    let addr: SocketAddr = ([0, 0, 0, 0], 8080).into();
+    println!("starting exporter on {:?}", addr);
 
-    render_prometheus(addr, MyOptions::default(), |request, options| async move {
+    let server_options = ServerOptions {
+        addr,
+        authorization: Authorization::None,
+    };
+
+    render_prometheus(server_options, MyOptions::default(), |request, options| async move {
         println!(
             "in our render_prometheus(request == {:?}, options == {:?})",
             request, options
