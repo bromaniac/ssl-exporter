@@ -1,4 +1,4 @@
-As of version 1.3.7 the [cert-util-operator](https://github.com/redhat-cop/cert-utils-operator) supports alerting on expiring certs stored as secrets in the cluster. Unfortunately we have some certs stored directly in the Istio routes in our cluster and those can be checked with this tool.
+As of version 1.3.7 the [cert-util-operator](https://github.com/redhat-cop/cert-utils-operator) supports alerting on expiring certs stored as secrets in the cluster so you should probably use that instead. It can also populate Routes with certs stored in secrets.
 
 # ssl-expiration
 
